@@ -34,8 +34,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
       "typeVersion": 1,
       "position": [
-        -40,
-        -100
+        -120,
+        100
       ],
       "id": "ae40613a-1713-4c65-a204-85ad4e05a93f",
       "name": "Ollama Chat Model",
@@ -48,13 +48,14 @@
     },
     {
       "parameters": {
-        "jsonSchemaExample": "{\n\t\"search_query\": \"<ADD>\"\n}"
+        "jsonSchemaExample": "{\n\t\"search_query\": \"<ADD>\"\n}",
+        "autoFix": true
       },
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.3,
       "position": [
-        160,
-        -120
+        40,
+        -80
       ],
       "id": "6f097c3f-fe56-4636-9c75-ea1ec3d17b7e",
       "name": "Structured Output Parser1"
@@ -421,6 +422,11 @@
             "node": "Generate Search Query",
             "type": "ai_languageModel",
             "index": 0
+          },
+          {
+            "node": "Structured Output Parser1",
+            "type": "ai_languageModel",
+            "index": 0
           }
         ]
       ]
@@ -600,7 +606,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "83017422-297f-47eb-a650-b5deeac2cc8c",
+  "versionId": "847a2686-5464-4cad-b823-517b26de76d9",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "4f600cb49d3121f65c18400af1d03491e3934ff3323ac0ca2427a7ded76555c6"
