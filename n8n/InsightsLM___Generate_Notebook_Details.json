@@ -6,8 +6,14 @@
         "httpMethod": "POST",
         "path": "0c488f50-8d6a-48a0-b056-5f7cfca9efe2",
         "authentication": "headerAuth",
-        "responseMode": "responseNode",
-        "options": {}
+        "options": {
+          "responseCode": {
+            "values": {
+              "responseCode": "customCode",
+              "customCode": 202
+            }
+          }
+        }
       },
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
@@ -20,33 +26,20 @@
       "webhookId": "0c488f50-8d6a-48a0-b056-5f7cfca9efe2",
       "credentials": {
         "httpHeaderAuth": {
-          "id": "39evQ95L86jhtb3I",
-          "name": "MyNoteBookLM Auth"
+          "id": "MFP2RlsZaArRcBmq",
+          "name": "Header Auth account"
         }
       }
     },
     {
       "parameters": {
-        "options": {}
-      },
-      "type": "n8n-nodes-base.respondToWebhook",
-      "typeVersion": 1.2,
-      "position": [
-        1920,
-        380
-      ],
-      "id": "de97d9d1-0434-469d-8426-1f84b2e5556a",
-      "name": "Respond to Webhook"
-    },
-    {
-      "parameters": {
         "promptType": "define",
-        "text": "={{ $json.extracted_text }}",
+        "text": "={{ $json.extracted_text.substring(0,1500) }}",
         "hasOutputParser": true,
         "messages": {
           "messageValues": [
             {
-              "message": "=Based on the data provided, output an appropriate title and summary of the document. \n\nAlso output an appropriate UTF-8 emoji for the notebook. - example: 🏆\nAnd output an appropriate color from this list\n\nslate\ngray\nzinc\nneutral\nstone\nred\norange\namber\nyellow\nlime\ngreen\nemerald\nteal\ncyan\nsky\nblue\nindigo\nviolet\npurple\nfuchsia\npink\nrose\n\nAlso output a list of 5 Example Questions that could be asked of this document. For example \"How are the rules and regulations of tennis enforced?\" - Maximum 10 words each\n\nOnly output in JSON."
+              "message": "=Based on the data provided, output the following ...\n\n1. An appropriate title, \n2. A 1 paragraph summary\n3. 5 example questions that could be asked of this document. \n\nFor example \"How are the rules and regulations of tennis enforced?\" - Maximum 10 words each\n\n4. One appropriate UTF-8 emoji\n\nOnly return the ONE emoji itself. No words. No punctuation.\n\nExample output:\n🏆\n📓\n😊\n❤️\n\nOnly output in JSON."
             }
           ]
         }
@@ -62,13 +55,14 @@
     },
     {
       "parameters": {
-        "jsonSchemaExample": "{\n\t\"title\": \"<ADD>\",\n\t\"summary\": \"<ADD>\",\n  \"notebook_icon\": \"<ADD>\",\n  \"background_color\": \"<ADD>\",\n  \"example_questions\": [\"ADD\",\"ADD\"]\n}"
+        "jsonSchemaExample": "{\n\t\"title\": \"<ADD>\",\n\t\"summary\": \"<ADD>\",\n  \"example_questions\": [\"ADD\",\"ADD\"],\n  \"emoji\": \"<ADD>\"\n}",
+        "autoFix": true
       },
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.2,
       "position": [
-        1700,
-        600
+        1680,
+        560
       ],
       "id": "69038609-bdec-4944-ad0a-f4e712bacd51",
       "name": "Structured Output Parser"
@@ -77,7 +71,7 @@
       "parameters": {
         "workflowId": {
           "__rl": true,
-          "value": "AzZ5a2zCGU1O3MRV",
+          "value": "d5jtwJY7RRoMcRk4",
           "mode": "list",
           "cachedResultName": "InsightsLM - Extract Text"
         },
@@ -241,37 +235,6 @@
     },
     {
       "parameters": {
-        "content": "## To Do \n- Configure the Extract Text node to trigger the \"Extract Text\" workflow",
-        "width": 680,
-        "color": 4
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "typeVersion": 1,
-      "position": [
-        1380,
-        100
-      ],
-      "id": "a9cfc8cf-60bc-41be-9fd6-769fd9e963b1",
-      "name": "Sticky Note"
-    },
-    {
-      "parameters": {
-        "content": "[![The AI Automators](https://www.theaiautomators.com/wp-content/uploads/2025/03/gray-logo.png)](https://www.theaiautomators.com/)\n## InsightsLM\nhttps://github.com/theaiautomators/insights-lm-public",
-        "height": 220,
-        "width": 280,
-        "color": 7
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "typeVersion": 1,
-      "position": [
-        0,
-        0
-      ],
-      "id": "9dc249b0-f5e9-45f9-b18c-ad8dacc5323e",
-      "name": "Sticky Note8"
-    },
-    {
-      "parameters": {
         "url": "={{ $json.body.filePath }}",
         "sendHeaders": true,
         "headerParameters": {
@@ -310,22 +273,110 @@
     {
       "parameters": {
         "model": "qwen3:8b-q4_K_M",
-        "options": {}
+        "options": {
+          "format": "json"
+        }
       },
       "type": "@n8n/n8n-nodes-langchain.lmOllama",
       "typeVersion": 1,
       "position": [
         1520,
-        600
+        760
       ],
       "id": "14bc8c90-1946-4924-a766-ac013e7a368d",
       "name": "Ollama Model",
       "credentials": {
         "ollamaApi": {
-          "id": "LsXjXhCnYq30FMoC",
+          "id": "QHz0rwHKElfjaqrz",
           "name": "Ollama account"
         }
       }
+    },
+    {
+      "parameters": {
+        "jsCode": "const options = [\n  'slate', 'gray', 'zinc', 'neutral', 'stone',\n  'red', 'orange', 'amber', 'yellow', 'lime',\n  'green', 'emerald', 'teal', 'cyan', 'sky',\n  'blue', 'indigo', 'violet', 'purple', 'fuchsia',\n  'pink', 'rose'\n];\n\nfor (const item of $input.all()) {\n  const randomOption = options[Math.floor(Math.random() * options.length)];\n  item.json.color = randomOption;\n}\n\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1960,
+        380
+      ],
+      "id": "27ce50e5-b997-4d8f-89bd-1ca35c13d64f",
+      "name": "Random Color"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "notebooks",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $('Webhook').item.json.body.notebookId }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "title",
+              "fieldValue": "={{ $json.output.title }}"
+            },
+            {
+              "fieldId": "description",
+              "fieldValue": "={{ $json.output.summary }}"
+            },
+            {
+              "fieldId": "color",
+              "fieldValue": "={{ $json.color }}"
+            },
+            {
+              "fieldId": "generation_status",
+              "fieldValue": "completed"
+            },
+            {
+              "fieldId": "example_questions",
+              "fieldValue": "={{ $json.output.example_questions }}"
+            },
+            {
+              "fieldId": "icon",
+              "fieldValue": "={{ $json.output.emoji.slice(0,2) }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2180,
+        380
+      ],
+      "id": "7a744622-d26b-4070-8382-8d10a831a6d0",
+      "name": "Update a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "FLQTzRBk2pJi894u",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "[![The AI Automators](https://www.theaiautomators.com/wp-content/uploads/2025/03/gray-logo.png)](https://www.theaiautomators.com/)\n## InsightsLM Local - Generate Notebook Details\nhttps://github.com/theaiautomators/insights-lm-public\nhttps://github.com/theaiautomators/insights-lm-local-package",
+        "height": 340,
+        "width": 320,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        200,
+        -40
+      ],
+      "id": "b02bcaac-9521-44f7-8a1c-c26532a1f3b7",
+      "name": "Sticky Note8"
     }
   ],
   "pinData": {},
@@ -345,7 +396,7 @@
       "main": [
         [
           {
-            "node": "Respond to Webhook",
+            "node": "Random Color",
             "type": "main",
             "index": 0
           }
@@ -461,20 +512,37 @@
             "node": "Generate Title & Description",
             "type": "ai_languageModel",
             "index": 0
+          },
+          {
+            "node": "Structured Output Parser",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Random Color": {
+      "main": [
+        [
+          {
+            "node": "Update a row",
+            "type": "main",
+            "index": 0
           }
         ]
       ]
     }
   },
-  "active": false,
+  "active": true,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "1e587ec9-925e-42a5-a239-fe5942c6ea8c",
+  "versionId": "944d943e-77c8-4100-aa6e-15d9e290b474",
   "meta": {
+    "templateCredsSetupCompleted": true,
     "instanceId": "4f600cb49d3121f65c18400af1d03491e3934ff3323ac0ca2427a7ded76555c6"
   },
-  "id": "TCremHPNiY9rFmzj",
+  "id": "K9HAf5FGpkuXha8F",
   "tags": [
     {
       "createdAt": "2025-07-01T11:04:36.330Z",

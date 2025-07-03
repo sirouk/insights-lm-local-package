@@ -19,8 +19,8 @@
       "webhookId": "19566c6c-e0a5-4a8f-ba1a-5203c2b663b7",
       "credentials": {
         "httpHeaderAuth": {
-          "id": "39evQ95L86jhtb3I",
-          "name": "MyNoteBookLM Auth"
+          "id": "MFP2RlsZaArRcBmq",
+          "name": "Header Auth account"
         }
       }
     },
@@ -49,7 +49,7 @@
       "alwaysOutputData": true,
       "credentials": {
         "supabaseApi": {
-          "id": "OeYUddl4OaIohMCC",
+          "id": "FLQTzRBk2pJi894u",
           "name": "Supabase account"
         }
       }
@@ -133,7 +133,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "yfvmutoxmibqzvyklggr/functions/v1/process-document-callback",
+        "url": "http://kong:8000/functions/v1/process-document-callback",
         "authentication": "predefinedCredentialType",
         "nodeCredentialType": "supabaseApi",
         "sendBody": true,
@@ -155,7 +155,7 @@
       "name": "HTTP Request",
       "credentials": {
         "supabaseApi": {
-          "id": "OeYUddl4OaIohMCC",
+          "id": "FLQTzRBk2pJi894u",
           "name": "Supabase account"
         }
       }
@@ -184,13 +184,14 @@
     },
     {
       "parameters": {
-        "jsonSchemaExample": "{\n\t\"title\": \"<ADD>\",\n\t\"summary\": \"<ADD>\"\n}"
+        "jsonSchemaExample": "{\n\t\"title\": \"<ADD>\",\n\t\"summary\": \"<ADD>\"\n}",
+        "autoFix": true
       },
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.2,
       "position": [
-        400,
-        540
+        380,
+        520
       ],
       "id": "a1de9b05-9c4e-42c3-bb9a-4b8d774472ba",
       "name": "Structured Output Parser"
@@ -235,7 +236,7 @@
       "name": "Supabase",
       "credentials": {
         "supabaseApi": {
-          "id": "OeYUddl4OaIohMCC",
+          "id": "FLQTzRBk2pJi894u",
           "name": "Supabase account"
         }
       }
@@ -244,7 +245,7 @@
       "parameters": {
         "workflowId": {
           "__rl": true,
-          "value": "AzZ5a2zCGU1O3MRV",
+          "value": "d5jtwJY7RRoMcRk4",
           "mode": "list",
           "cachedResultName": "InsightsLM - Extract Text"
         },
@@ -323,51 +324,22 @@
     },
     {
       "parameters": {
-        "content": "## To Do \n- Configure the Supabase nodes to reference your Project\n- Configure \"Extract Text\" to hit the correct workflow\n- Update the Host of the \"HTTP Request\" to hit your project",
-        "width": 580,
-        "color": 4
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "typeVersion": 1,
-      "position": [
-        720,
-        40
-      ],
-      "id": "226773e8-c3fd-4147-b2b5-83d31954d319",
-      "name": "Sticky Note"
-    },
-    {
-      "parameters": {
-        "content": "[![The AI Automators](https://www.theaiautomators.com/wp-content/uploads/2025/03/gray-logo.png)](https://www.theaiautomators.com/)\n## InsightsLM\nhttps://github.com/theaiautomators/insights-lm-public",
-        "height": 220,
-        "width": 280,
-        "color": 7
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "typeVersion": 1,
-      "position": [
-        0,
-        0
-      ],
-      "id": "0636f087-f93a-448e-b730-c066e09a09b8",
-      "name": "Sticky Note8"
-    },
-    {
-      "parameters": {
         "model": "qwen3:8b-q4_K_M",
-        "options": {}
+        "options": {
+          "format": "json"
+        }
       },
       "type": "@n8n/n8n-nodes-langchain.lmOllama",
       "typeVersion": 1,
       "position": [
         200,
-        540
+        700
       ],
       "id": "53bca64c-212a-4f85-a34a-9fbb68cc6c45",
       "name": "Ollama Model",
       "credentials": {
         "ollamaApi": {
-          "id": "LsXjXhCnYq30FMoC",
+          "id": "QHz0rwHKElfjaqrz",
           "name": "Ollama account"
         }
       }
@@ -386,10 +358,26 @@
       "name": "Embeddings Ollama",
       "credentials": {
         "ollamaApi": {
-          "id": "LsXjXhCnYq30FMoC",
+          "id": "QHz0rwHKElfjaqrz",
           "name": "Ollama account"
         }
       }
+    },
+    {
+      "parameters": {
+        "content": "[![The AI Automators](https://www.theaiautomators.com/wp-content/uploads/2025/03/gray-logo.png)](https://www.theaiautomators.com/)\n## InsightsLM Local - Upsert to Vector Store\nhttps://github.com/theaiautomators/insights-lm-public\nhttps://github.com/theaiautomators/insights-lm-local-package",
+        "height": 260,
+        "width": 300,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        40,
+        -40
+      ],
+      "id": "e04befbc-d931-4849-8778-a93b832c1004",
+      "name": "Sticky Note9"
     }
   ],
   "pinData": {},
@@ -533,6 +521,11 @@
             "node": "Generate Title & Description",
             "type": "ai_languageModel",
             "index": 0
+          },
+          {
+            "node": "Structured Output Parser",
+            "type": "ai_languageModel",
+            "index": 0
           }
         ]
       ]
@@ -549,14 +542,15 @@
       ]
     }
   },
-  "active": false,
+  "active": true,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "",
+  "versionId": "9371b231-4055-4097-b572-d3449228f187",
   "meta": {
     "instanceId": "4f600cb49d3121f65c18400af1d03491e3934ff3323ac0ca2427a7ded76555c6"
   },
+  "id": "jTHf2gRBacjaDiRp",
   "tags": [
     {
       "createdAt": "2025-07-01T11:04:36.330Z",
