@@ -169,7 +169,7 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=# User Query\n{{ $('Webhook').item.json.body.message }}\n\n# Conversation History \n{{ JSON.stringify($('Fetch Memory').item.json.messages) }}\n\n# Retrieved Chunks from Knowledgebase\n{{ JSON.stringify($json.data) }}",
+        "text": "=# User Query\n{{ $('Webhook').item.json.body.message }}\n\n# Conversation History \n{{ $('Aggregate1').item.json.data }}\n\n# Retrieved Chunks from Knowledgebase\n{{ JSON.stringify($json.data) }}",
         "hasOutputParser": true,
         "messages": {
           "messageValues": [
@@ -362,6 +362,7 @@
       ],
       "id": "e5526eaa-09e4-46c2-9c75-0b6600014ec0",
       "name": "Fetch Chat History",
+      "alwaysOutputData": true,
       "credentials": {
         "supabaseApi": {
           "id": "FLQTzRBk2pJi894u",
@@ -595,11 +596,11 @@
       ]
     }
   },
-  "active": true,
+  "active": false,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "569dde43-6668-41b2-afe6-ffbd3632bcdb",
+  "versionId": "83017422-297f-47eb-a650-b5deeac2cc8c",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "4f600cb49d3121f65c18400af1d03491e3934ff3323ac0ca2427a7ded76555c6"
