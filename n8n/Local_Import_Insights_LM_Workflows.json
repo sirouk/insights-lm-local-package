@@ -197,19 +197,19 @@
             {
               "id": "0c78076e-6b86-4521-9f56-53bf537deb7d",
               "name": "Enter your n8n Supabase Credential ID",
-              "value": "FLQTzRBk2pJi894u",
+              "value": "",
               "type": "string"
             },
             {
               "id": "a08496dd-25cb-4905-81a5-15fe8bb73c87",
               "name": "Enter the n8n Custom Webhook Header Auth ID",
-              "value": "MFP2RlsZaArRcBmq",
+              "value": "",
               "type": "string"
             },
             {
               "id": "4a8ab47c-538c-47c6-8d2e-fd5e975e1868",
               "name": "Enter the Ollama Credential ID",
-              "value": "QHz0rwHKElfjaqrz",
+              "value": "",
               "type": "string"
             }
           ]
