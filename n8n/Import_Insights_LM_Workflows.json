@@ -1,0 +1,620 @@
+{
+  "name": "Import Insights LM Workflows (LOCAL VERSION)",
+  "nodes": [
+    {
+      "parameters": {
+        "fieldToSplitOut": "[\"workflow-files\"]",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        960,
+        760
+      ],
+      "id": "6750e66b-47d0-479e-b946-924121080a07",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1180,
+        760
+      ],
+      "id": "1f0bca13-3352-4afd-9839-dae832117716",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.file_url }}?cacheBust={{ $now.toISO() }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1460,
+        300
+      ],
+      "id": "f8f39034-bd23-4540-8ac6-de2ef2a123d1",
+      "name": "Download Workflow File"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over each input item passed to this node\nfor (const item of $input.all()) {\n  // Convert the JSON object of the current item into a string\n  let dataString = JSON.stringify(item.json);\n\n  // Perform the find-and-replace operations on the string version of the JSON.\n  // The 'g' flag in the regular expression ensures all instances are replaced.\n  const updatedString = dataString\n    .replace(/39evQ95L86jhtb3I/g, $('Enter User Values').first().json['Enter the n8n Custom Webhook Header Auth ID'])\n    .replace(/yfvmutoxmibqzvyklggr/g, $('Enter User Values').first().json['Enter Supabase Project ID'])\n    .replace(/OeYUddl4OaIohMCC/g, $('Enter User Values').first().json['Enter your n8n Supabase Credential ID'])\n    .replace(/hNalDChhNUDtYG7T/g, $('Enter User Values').first().json['Enter the n8n OpenAI Credential ID'])\n    .replace(/PzC8XiX0nzmyH9AA/g, $('Enter User Values').first().json['Enter the n8n Google Gemini (PaLM) Credential ID'])\n    .replace(/OuPBM6n0hyobX8h6/g, $('Enter User Values').first().json['Enter the n8n Postgres Credential ID']);\n\n  // Convert the modified string back into a JSON object and\n  // overwrite the original JSON data of the item.\n  item.json = JSON.parse(updatedString);\n}\n\n// Return all the modified items to be passed to the next node in the workflow.\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1680,
+        300
+      ],
+      "id": "fe3f64de-e622-490f-b136-c7e29e5270db",
+      "name": "Find and Replace"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Loop Over Items').item.json.file_type }}",
+                    "rightValue": "generate-notebook-details",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "304285e6-dee5-4ff7-adbd-6ee937ae58f4"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "5b066c3c-356a-4570-8eac-641bd3d515e1",
+                    "leftValue": "={{ $('Loop Over Items').item.json.file_type }}",
+                    "rightValue": "upsert-to-vector-store",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "743b9cbe-e88b-45c1-8d2c-e372995f6c49",
+                    "leftValue": "={{ $('Loop Over Items').item.json.file_type }}",
+                    "rightValue": "process-additional-sources",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "looseTypeValidation": true,
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        1920,
+        280
+      ],
+      "id": "263b1d4f-b06d-45db-ac22-58ff311d0626",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over each input item passed to this node\nfor (const item of $input.all()) {\n  // Convert the JSON object of the current item into a string\n  let dataString = JSON.stringify(item.json);\n\n  // Perform the find-and-replace operations on the string version of the JSON.\n  // The 'g' flag in the regular expression ensures all instances are replaced.\n  const updatedString = dataString\n    .replace(/AzZ5a2zCGU1O3MRV/g, $('n8n').first(0,0).json.id);\n\n  // Convert the modified string back into a JSON object and\n  // overwrite the original JSON data of the item.\n  item.json = JSON.parse(updatedString);\n}\n\n// Return all the modified items to be passed to the next node in the workflow.\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2200,
+        60
+      ],
+      "id": "0a09a576-62c8-4718-92f1-27be893ca5d9",
+      "name": "Update Extract Text Workflow Reference"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over each input item passed to this node\nfor (const item of $input.all()) {\n  // Convert the JSON object of the current item into a string\n  let dataString = JSON.stringify(item.json);\n\n  // Perform the find-and-replace operations on the string version of the JSON.\n  // The 'g' flag in the regular expression ensures all instances are replaced.\n  const updatedString = dataString\n    .replace(/IQcdcedwXg2w3AuW/g, $('n8n').first(0,2).json.id);\n\n  // Convert the modified string back into a JSON object and\n  // overwrite the original JSON data of the item.\n  item.json = JSON.parse(updatedString);\n}\n\n// Return all the modified items to be passed to the next node in the workflow.\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2200,
+        240
+      ],
+      "id": "a1f450da-c138-4f47-b1f9-6cee909458e4",
+      "name": "Update Vector Upsert Workflow Reference"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "workflowObject": "={{ $json.data }}",
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.n8n",
+      "typeVersion": 1,
+      "position": [
+        2640,
+        420
+      ],
+      "id": "53abb382-df64-4ea6-aa59-a624994d5aff",
+      "name": "n8n",
+      "credentials": {
+        "n8nApi": {
+          "id": "ZiwO9batSPH9vtqD",
+          "name": "n8n account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "866c90b8-42da-4178-93ce-26665d38d5ee",
+              "name": "Enter Supabase Project ID",
+              "value": "http://kong:8000",
+              "type": "string"
+            },
+            {
+              "id": "0c78076e-6b86-4521-9f56-53bf537deb7d",
+              "name": "Enter your n8n Supabase Credential ID",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "a08496dd-25cb-4905-81a5-15fe8bb73c87",
+              "name": "Enter the n8n Custom Webhook Header Auth ID",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "8adb8fb6-9daf-4385-bfce-547e0b982a8e",
+              "name": "Enter the n8n Postgres Credential ID",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "4a8ab47c-538c-47c6-8d2e-fd5e975e1868",
+              "name": "Enter the Ollama Credential ID",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        220,
+        760
+      ],
+      "id": "6af65cbe-bebb-4552-8372-0e9a4c668167",
+      "name": "Enter User Values"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -20,
+        760
+      ],
+      "id": "b916caec-0635-4e7b-b066-c0b9192ddb90",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "content": "## UPDATE - Add Values\nYou need to fill out all fields here before running this workflow",
+        "height": 340,
+        "width": 280,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        140,
+        620
+      ],
+      "id": "24212c67-8220-4e62-86b3-40ca4aff76e6",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## UPDATE - n8n Node\nCreate an API key in your n8n instance and set the credentials in this node\n\nTo create a key click the 3 dots beside your name on the bottom left, then Settings > then n8n API > then Create API Key",
+        "height": 420,
+        "width": 360,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2500,
+        200
+      ],
+      "id": "75aa1e5d-4454-45db-90e4-eeff902da421",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "fdfeb2e5-e42b-4048-a459-c9b09595104d",
+              "leftValue": "={{ $json[\"Enter Supabase Project ID\"] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "8abfdbe7-0c09-4453-87c6-ce6a397a45b0",
+              "leftValue": "={{ $json[\"Enter your n8n Supabase Credential ID\"] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "4d4af96c-0fcd-4f4d-bcb9-5e0ebc5da5f3",
+              "leftValue": "={{ $json[\"Enter the n8n Custom Webhook Header Auth ID\"] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "69dd9550-e36f-4612-8e78-f44331b08164",
+              "leftValue": "={{ $json[\"Enter the n8n Postgres Credential ID\"] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "9d574103-9568-4434-a9f7-ffe0a09fdbc9",
+              "leftValue": "={{ $json['Enter the Ollama Credential ID'] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        440,
+        760
+      ],
+      "id": "706ca2dd-19a0-43fd-9a75-6ca7f5844653",
+      "name": "Checking Values are Set"
+    },
+    {
+      "parameters": {
+        "content": "# Import Insights LM Workflows (LOCAL VERSION)\n- Only run this workflow once to avoid having duplicate workflows in your project.\n- If you do create duplicate workflows, you can archive them in your instance\n- https://github.com/theaiautomators/insights-lm-public",
+        "width": 840,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        380,
+        0
+      ],
+      "id": "09c9a785-3fd9-4034-923d-f29fad691781",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## SUCCESS\n",
+        "height": 340,
+        "width": 340,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1440,
+        660
+      ],
+      "id": "dc1d4241-18a8-4f98-8925-e2b4aa5a1cce",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "[![The AI Automators](https://www.theaiautomators.com/wp-content/uploads/2025/03/gray-logo.png)](https://www.theaiautomators.com/)",
+        "width": 340,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "119b50fa-5000-48a0-ae74-39cf800ff9bc",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d0ee4497-e902-40c5-8938-811bb206f6c8",
+              "name": "workflow-files",
+              "value": "=[\n    {\n      \"file_type\": \"extract-text\",\n      \"file_url\": \"https://raw.githubusercontent.com/theaiautomators/insights-lm-public/main/n8n/local-versions/InsightsLM___Extract_Text.json\"\n    },\n    {\n      \"file_type\": \"generate-notebook-details\",\n      \"file_url\": \"https://raw.githubusercontent.com/theaiautomators/insights-lm-public/main/n8n/local-versions/InsightsLM___Generate_Notebook_Details.json\"\n    },\n    {\n      \"file_type\": \"upsert-to-vector-store\",\n      \"file_url\": \"https://raw.githubusercontent.com/theaiautomators/insights-lm-public/main/n8n/local-versions/InsightsLM___Upsert_to_Vector_Store.json\"\n    },\n    {\n      \"file_type\": \"process-additional-sources\",\n      \"file_url\": \"https://raw.githubusercontent.com/theaiautomators/insights-lm-public/main/n8n/local-versions/InsightsLM___Process_Additional_Sources.json\"\n    },\n    {\n      \"file_type\": \"chat\",\n      \"file_url\": \"https://raw.githubusercontent.com/theaiautomators/insights-lm-public/main/n8n/local-versions/InsightsLM___Chat.json\"\n    },\n    {\n      \"file_type\": \"podcast-generation\",\n      \"file_url\": \"https://raw.githubusercontent.com/theaiautomators/insights-lm-public/main/n8n/local-versions/InsightsLM___Podcast_Generation.json\"\n    }\n  ]",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        740,
+        760
+      ],
+      "id": "a9303a42-09bf-4a36-9e47-8065a7c5697f",
+      "name": "Workflow File URLs to Download (Local Versions)"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over each input item passed to this node\nfor (const item of $input.all()) {\n  // Convert the JSON object of the current item into a string\n  let dataString = JSON.stringify(item.json);\n\n  // Perform the find-and-replace operations on the string version of the JSON.\n  // The 'g' flag in the regular expression ensures all instances are replaced.\n  const updatedString = dataString\n    .replace(/39evQ95L86jhtb3I/g, $('Enter User Values').first().json['Enter the n8n Custom Webhook Header Auth ID'])\n    .replace(/yfvmutoxmibqzvyklggr/g, $('Enter User Values').first().json['Enter Supabase Project ID'])\n    .replace(/OeYUddl4OaIohMCC/g, $('Enter User Values').first().json['Enter your n8n Supabase Credential ID'])\n    .replace(/LsXjXhCnYq30FMoC/g, $('Enter User Values').first().json['Enter the Ollama Credential ID'])\n    .replace(/OuPBM6n0hyobX8h6/g, $('Enter User Values').first().json['Enter the n8n Postgres Credential ID']);\n\n  // Convert the modified string back into a JSON object and\n  // overwrite the original JSON data of the item.\n  item.json = JSON.parse(updatedString);\n}\n\n// Return all the modified items to be passed to the next node in the workflow.\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1540,
+        820
+      ],
+      "id": "a9a7840b-5b42-48d0-8497-ccb62c557bc9",
+      "name": "Workflows Created!"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Workflows Created!",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Download Workflow File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Workflow File": {
+      "main": [
+        [
+          {
+            "node": "Find and Replace",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find and Replace": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Update Extract Text Workflow Reference",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Update Extract Text Workflow Reference",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Update Vector Upsert Workflow Reference",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "n8n",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "n8n": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Extract Text Workflow Reference": {
+      "main": [
+        [
+          {
+            "node": "n8n",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Vector Upsert Workflow Reference": {
+      "main": [
+        [
+          {
+            "node": "n8n",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enter User Values": {
+      "main": [
+        [
+          {
+            "node": "Checking Values are Set",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Enter User Values",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Checking Values are Set": {
+      "main": [
+        [
+          {
+            "node": "Workflow File URLs to Download (Local Versions)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Workflow File URLs to Download (Local Versions)": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "f99b2533-4348-4d44-a0fa-74dca13d7a21",
+  "meta": {
+    "instanceId": "4f600cb49d3121f65c18400af1d03491e3934ff3323ac0ca2427a7ded76555c6"
+  },
+  "id": "1Xt3aNvqmjHA0iqi",
+  "tags": [
+    {
+      "createdAt": "2025-07-01T11:04:36.330Z",
+      "updatedAt": "2025-07-01T11:04:36.330Z",
+      "id": "Wki6TfWIHzQoLAWa",
+      "name": "TheAIAutomators.com"
+    }
+  ]
+}

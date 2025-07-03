@@ -1,0 +1,438 @@
+{
+  "name": "InsightsLM - Podcast Generation",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "4c4699bc-004b-4ca3-8923-373ddd4a274e",
+        "authentication": "headerAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1940,
+        340
+      ],
+      "id": "8e699fa4-ea2a-4fd7-87be-e0779e3ef149",
+      "name": "Webhook",
+      "webhookId": "4c4699bc-004b-4ca3-8923-373ddd4a274e",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "39evQ95L86jhtb3I",
+          "name": "MyNoteBookLM Auth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "sources",
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "notebook_id",
+              "condition": "eq",
+              "keyValue": "={{ $('Webhook').item.json.body.notebook_id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -1720,
+        340
+      ],
+      "id": "c94ea89c-1a4a-4911-94b4-e5512884a0a9",
+      "name": "Get Sources",
+      "credentials": {
+        "supabaseApi": {
+          "id": "OeYUddl4OaIohMCC",
+          "name": "MynotebookLM Supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "include": "specifiedFields",
+        "fieldsToInclude": "title,content",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        -1500,
+        340
+      ],
+      "id": "0ac0a7f7-ce65-4670-8035-2287f79e016d",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c3743cbc-c838-401a-8f65-95a386707ded",
+              "name": "prompt",
+              "value": "=I’ll give you the text of SOURCE(S) and I’d like you to use the instructions below to write a podcast script\n\n# EXAMPLE OUTPUT STRUCTURE & TRANSCRIPT\n\nPlease read aloud the following in a podcast interview style:\nSpeaker 1: When you watch a Formula One car flash by, it's just an incredible sight. \nSpeaker 2: These things are absolute apex predators of engineering, aren't they? Machines designed purely for speed, pushing everything, materials, aero to the absolute limit. Every single part feels like a technological marvel. It really does.\nSpeaker 1: And what's amazing is that these cars, they weren't just dreamt up in a vacuum. You know, they actually exist within this incredibly tight box, a really, really detailed rulebook that dictates pretty much everything that is and isn't possible.\nSpeaker 2: Exactly. And for this deep dive, we're going straight to the source of that box. Our material today is key sections from the official 2025 Formula One technical regulations put out by the sports governing body, the FIA. Yeah. And our mission here for you listening is really to kind of pull back the curtain on that rulebook. We want to unpack these regulations, try and understand the fundamental principles, maybe some of the surprising details, and just grasp how much complexity is actually baked into the blueprint of an F1 car. It's not just, you know, dry rules. It's the framework that shapes performance, safety and that constant, fascinating battle of innovation we see season after season.\nSpeaker 1: OK, so let's start right at the top then. Yeah. The regulations make it pretty clear who's running the show. It's the FIA, right? They own and organize the Formula One World Championship. They're the ones handing out those coveted titles for drivers, constructors.\nSpeaker 2: That's right. And beneath that sort of top level, there are layers upon layers of rules governing absolutely everything. The championship itself, every single competition within it. So each race weekend, they're governed by the International Sporting Code. These technical regulations we're looking at today, the sporting regulations which cover race procedures, penalties, that kind of thing.\n\n# INSTRUCTIONS TO FOLLOW\n\n1. Opening:\n– Begin with some interesting opening remarks on the topic between the hosts\n– Then introduce the topic as a “deep dive” into the subject matter.\n\n2. Dialog Structure:\n– Use two hosts who engage in a conversational back-and-forth.\n– Alternate between short, punchy statements and longer explanations.\n– Use frequent affirmations like “Right,” “Exactly,” and “Absolutely” to maintain flow and agreement.\n\n3. Language and Tone:\n– Keep the language informal and accessible. Use contractions and colloquialisms.\n– Maintain an enthusiastic, energetic tone throughout.\n– Use rhetorical questions to transition between points: “It’s fascinating, isn’t it?”\n– Employ phrases like “You know” and “I mean” to maintain a casual feel.\n\n4. Content Presentation:\n– Introduce source material (e.g., articles, studies) early in the discussion.\n– Use analogies to explain complex concepts: “It’s like…”\n– Break down ideas into digestible chunks, often using numbered points or clear transitions.\n\n5. Interaction Between Hosts:\n– Have one host pose questions or express confusion, allowing the other to explain.\n– Use phrases like “You’ve hit the nail on the head” to validate each other’s points.\n– Build on each other’s ideas, creating a collaborative feel.\n\n6. Engagement Techniques:\n– Address the audience directly at times: “So to everyone listening…”\n– Pose thought-provoking questions for the audience to consider.\n\n7. Structure and Pacing:\n– Start with a broad introduction of the topic and narrow down to specific points.\n– Use phrases like “So we’ve established…” to summarize and move to new points.\n– Maintain a brisk pace, but allow for moments of reflection on bigger ideas.\n\n8. Concluding the Episode:\n– Signal the wrap-up with “So as we wrap things up…”\n– Pose a final thought-provoking question or takeaway.\n– Use the phrase “And on that note…” to transition to the closing.\n– Encourage continued engagement: “stay curious, keep those questions coming.”\n– End with a consistent sign-off: “Until next time, keep [relevant verb].”\n\n9. Overall Flow:\n– Begin with the misconception or general understanding of the topic.\n– Introduce expert sources that challenge or deepen this understanding.\n– Discuss implications and broader context of the new information.\n– Conclude with how this knowledge affects the listener or the field at large.\n\nRemember to maintain a balance between informative content and engaging conversation, always keeping the tone friendly and accessible regardless of the complexity of the topic.\n\n# SOURCE(S) TO CREATE TRANSCRIPT FROM\n\n{{ JSON.stringify($json.data) }}\n\n# OTHER\n\nIMPORTANT: Only output the transcript and use \\n in between speakers dialog\nIMPORTANT: Your response must start with ...\n\"Please read aloud the following in a podcast interview style:\nSpeaker 1: \"",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1280,
+        340
+      ],
+      "id": "2f8786f4-99da-447c-b60b-3d01ba2abddf",
+      "name": "Set Prompt"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.prompt }}",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        -1060,
+        340
+      ],
+      "id": "3cd0b3e1-f080-4978-8b29-6657833b0e38",
+      "name": "Basic LLM Chain",
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "maxTries": 5
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=yfvmutoxmibqzvyklggr/storage/v1/object/audio/{{ $('Webhook').item.json.body.notebook_id}}/{{ $binary.data.fileName }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "supabaseApi",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true
+            }
+          }
+        }
+      },
+      "id": "b96f12d0-6d97-4fe0-8a97-df866f41d9f6",
+      "name": "Upload object",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        -464,
+        340
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "OeYUddl4OaIohMCC",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=yfvmutoxmibqzvyklggr/storage/v1/object/sign/{{ $json.body.Key }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "supabaseApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"expiresIn\": 86400\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -244,
+        340
+      ],
+      "id": "0581c5c0-2fd9-4d1f-98e9-aa84f3b78ed4",
+      "name": "Generate Signed URL",
+      "credentials": {
+        "supabaseApi": {
+          "id": "OeYUddl4OaIohMCC",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nfor (const item of $input.all()) {\n  const now = new Date();\n  const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000); // Add 1 day in ms\n  item.json.timestamp = tomorrow.toISOString(); // Compatible with Supabase timestampz\n}\n\nreturn $input.all();\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -24,
+        340
+      ],
+      "id": "ceb82407-1ef9-4a01-894a-0eebe1d60511",
+      "name": "Generate Timestamp for Expires"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "notebooks",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $('Webhook').item.json.body.notebook_id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "audio_overview_url",
+              "fieldValue": "=https://yfvmutoxmibqzvyklggr.supabase.co/storage/v1/{{ $json.signedURL }}"
+            },
+            {
+              "fieldId": "audio_url_expires_at",
+              "fieldValue": "={{ $json.timestamp }}"
+            },
+            {
+              "fieldId": "audio_overview_generation_status",
+              "fieldValue": "completed"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        196,
+        340
+      ],
+      "id": "054c3972-3250-40ee-b9dc-aabb79f8f1f5",
+      "name": "Supabase",
+      "credentials": {
+        "supabaseApi": {
+          "id": "OeYUddl4OaIohMCC",
+          "name": "MynotebookLM Supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "[![The AI Automators](https://www.theaiautomators.com/wp-content/uploads/2025/03/gray-logo.png)](https://www.theaiautomators.com/)\n## InsightsLM\nhttps://github.com/theaiautomators/insights-lm-public",
+        "height": 220,
+        "width": 280,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1940,
+        60
+      ],
+      "id": "582b715f-8400-447e-a986-7faf3ca27bbd",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "model": "qwen3:8b-q4_K_M",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmOllama",
+      "typeVersion": 1,
+      "position": [
+        -1080,
+        540
+      ],
+      "id": "687d0fca-df37-41ec-8b8e-726a98ff7545",
+      "name": "Ollama Model",
+      "credentials": {
+        "ollamaApi": {
+          "id": "LsXjXhCnYq30FMoC",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "http://coqui-tts:5002/api/tts",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "style_wav"
+            },
+            {
+              "name": "language_id"
+            },
+            {
+              "name": "speaker_id",
+              "value": "p374"
+            },
+            {
+              "name": "text",
+              "value": "={{ JSON.stringify($json.text) }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -684,
+        340
+      ],
+      "id": "fa93d85d-2577-4b87-a821-22af989497b0",
+      "name": "Generate Local Audio"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Get Sources",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Sources": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Set Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Prompt": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Generate Local Audio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload object": {
+      "main": [
+        [
+          {
+            "node": "Generate Signed URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Signed URL": {
+      "main": [
+        [
+          {
+            "node": "Generate Timestamp for Expires",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Timestamp for Expires": {
+      "main": [
+        [
+          {
+            "node": "Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Local Audio": {
+      "main": [
+        [
+          {
+            "node": "Upload object",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "815be1b6-03c8-4514-9429-e719c2f5051d",
+  "meta": {
+    "instanceId": "4f600cb49d3121f65c18400af1d03491e3934ff3323ac0ca2427a7ded76555c6"
+  },
+  "id": "r2jTfNg26V5lp7g6",
+  "tags": [
+    {
+      "createdAt": "2025-07-01T11:04:36.330Z",
+      "updatedAt": "2025-07-01T11:04:36.330Z",
+      "id": "Wki6TfWIHzQoLAWa",
+      "name": "TheAIAutomators.com"
+    }
+  ]
+}
