@@ -6,7 +6,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![GitHub stars](https://img.shields.io/github/stars/theaiautomators/insights-lm-public?style=social)](https://github.com/theaiautomators/insights-lm-public/stargazers)
-[![YouTube Video](https://img.shields.io/badge/YouTube-red)](https://www.youtube.com/watch?v=WQtnSPdDjf4)
+[![YouTube Video](https://img.shields.io/badge/YouTube-red)](https://www.youtube.com/watch?v=aj2FkaaL1co)
 
 This repository contains the files and instructions needed to run a **fully local, private, and self-hosted** version of [InsightsLM](https://github.com/theaiautomators/insights-lm-public). Now, you can run your own AI research assistant completely offline, ensuring total privacy and control over your data.
 
@@ -42,7 +42,7 @@ The backend, powered by **N8N**, has been re-engineered to work with local model
 For a full demonstration of this local version, an overview of its architecture, and a step-by-step guide on how to set it up, check out our YouTube video:
 
 <p>
-  <a target="_blank" href="https://www.youtube.com/watch?v=WQtnSPdDjf4"><img src="https://raw.githubusercontent.com/theaiautomators/insights-lm-local-package/refs/heads/main/local.png" alt="Video" width="500"/></a>
+  <a target="_blank" href="https://www.youtube.com/watch?v=aj2FkaaL1co"><img src="https://raw.githubusercontent.com/theaiautomators/insights-lm-local-package/refs/heads/main/local.png" alt="Video" width="500"/></a>
 </p>
 
 ---
