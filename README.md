@@ -42,7 +42,7 @@ The backend, powered by **N8N**, has been re-engineered to work with local model
 For a full demonstration of this local version, an overview of its architecture, and a step-by-step guide on how to set it up, check out our YouTube video:
 
 <p>
-  <a target="_blank" href="https://www.youtube.com/watch?v=WQtnSPdDjf4"><img src="https://raw.githubusercontent.com/theaiautomators/insights-lm-local-package/main/public/local.png" alt="Video" width="500"/></a>
+  <a target="_blank" href="https://www.youtube.com/watch?v=WQtnSPdDjf4"><img src="https://raw.githubusercontent.com/theaiautomators/insights-lm-local-package/refs/heads/main/local.png" alt="Video" width="500"/></a>
 </p>
 
 ---
