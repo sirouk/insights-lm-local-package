@@ -80,7 +80,7 @@ I recommend you follow along from **10:48** in our [YouTube video](https://youtu
 ### Installation Steps
 
 1.  **Clone the Base Local AI Package Repo**
-    * Open your terminal or VS Code and clone Cole Medin's `local-ai-packaged` repository. This forms the foundation of our local setup.
+    * Open your terminal or VS Code and clone Cole Medin's [local-ai-packaged](https://github.com/coleam00/local-ai-packaged) repository. This forms the foundation of our local setup.
     ```bash
     git clone https://github.com/coleam00/local-ai-packaged.git
     cd local-ai-packaged
@@ -102,28 +102,36 @@ I recommend you follow along from **10:48** in our [YouTube video](https://youtu
 4.  **Update Docker Compose**
     * Open the main `docker-compose.yml` file in the root directory.
     * Open the `docker-compose.yml.copy` file located inside `insights-lm-local-package/`.
-    * Copy the `whisper-cache` volume and the three services (`insights-lm`, `cokey-tts`, `whisper-asr`) from the `.copy` file.
+    * Copy the `whisper-cache` volume and the three services (`insights-lm`, `coqui-tts`, `whisper-asr`) from the `.copy` file. 
     * Paste them into the main `docker-compose.yml` file in their respective `volumes` and `services` sections.
-    * Update the Olama model to `qwen3:8b-q4_K_M`.
+    * Note: Both Coqui and Whisper are configured in these services to work on a GPU. If you are using Apple Silicon or a CPU then check out their respective documentation on how adjust these.
+    * Update the Olama model to `qwen3:8b-q4_K_M` on line 55.
 
 5.  **Start the Services**
+    * Open up Docker Desktop
     * Run the start script provided in Cole's repository. Use the command appropriate for your system (e.g., Nvidia GPU). This will download all the necessary Docker images and start the containers. This may take a while.
     ```bash
     # Example for Nvidia GPU
     python start_services.py --profile gpu-nvidia
     ```
 
-6.  **Move Supabase Functions**
+6.  **Import Supabase Script**
+    * Login to your Supabase instance (usually at `http://localhost:8000`)
+    * Go to SQL Editor
+    * Paste the contents of the file located in `insights-lm-local-package/supabase-migration.sql` into the SQL editor and click Run
+    * You should get a "Success. No rows returned" message
+
+7.  **Move Supabase Functions**
     * Once the Docker images have downloaded and the service are up, navigate to the `insights-lm-local-package/supabase/functions/` directory.
     * Copy all the function folders within it.
     * Paste them into the `supabase/volumes/functions/` directory.
 
-7.  **Update Supabase Docker Configuration**
+8.  **Update Supabase Docker Configuration**
     * Open the `supabase/docker/docker-compose.yml` file.
     * Copy the environment variables listed in `insights-lm-local-package/supabase/docker-compose.yml.copy`.
     * Paste these variables under the `functions` service in the `supabase/docker/docker-compose.yml` file. This gives the edge functions access to your N8N webhook URLs.
 
-8.  **Restart Docker Containers**
+9.  **Restart Docker Containers**
     * Shut down all running services using the provided command.
     ```bash
     # Example for Nvidia GPU
@@ -131,12 +139,21 @@ I recommend you follow along from **10:48** in our [YouTube video](https://youtu
     ```
     * Restart the services using the `start_services.py` script again to apply all changes.
 
+
+
 9.  **Import and Configure N8N Workflows**
     * Access N8N in your browser (usually at `http://localhost:5678`).
     * Create a new workflow and import the `Import_Insights_LM_Workflows.json` file from the `insights-lm-local-package/n8n/` directory.
-    * Follow the steps in the video to configure the importer workflow. This involves:
-        * Creating an N8N API Key and setting the credential in the N8N node
-        * Creating credentials for Supabase API, Olama & Webhook Header Auth and copy those credential IDs into the "Enter User Values" node 
+    * Follow the steps in the video to configure the importer workflow.
+        * Create an N8N API Key and set the credential in the N8N node
+            * URL should be "http://localhost:5678/api/v1"
+        * Create credential for Webhook Header Auth and copy the credential ID into the "Enter User Values" node
+            * Name must be "Authorization" and value is what was set at the bottom of the ENV file 
+        * Create credential for Supabase API and copy the credential ID into the "Enter User Values" node
+            * Host should be "http://kong:8000"
+            * Service Role Secret is in your ENV file
+        * Create credential for Olama and copy the credential ID into the "Enter User Values" node 
+            * Base URL should be "http://ollama:11434"
     * Run the importer workflow to automatically set up all the required InsightsLM workflows in your N8N instance.
 
 10. **Activate Workflows & Test**
