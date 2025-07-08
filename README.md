@@ -68,7 +68,7 @@ This project runs a suite of services locally using Docker. The core components 
 
 This guide provides the steps to get the fully local version of InsightsLM up and running.
 
-I recommend you follow along from **10:48** in our [YouTube video](https://youtu.be/WQtnSPdDjf4?t=646) for a detailed visual guide.
+I recommend you follow along from **10:48** in our [YouTube video](https://www.youtube.com/watch?v=aj2FkaaL1co) for a detailed visual guide.
 
 ### Prerequisites
 
