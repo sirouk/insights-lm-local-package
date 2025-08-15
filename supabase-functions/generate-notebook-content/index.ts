@@ -32,7 +32,7 @@ serve(async (req) => {
         hasUrl: !!webServiceUrl,
         hasAuth: !!authHeader
       })
-      
+
       return new Response(
         JSON.stringify({ error: 'Web service configuration missing' }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -69,7 +69,7 @@ serve(async (req) => {
         .select('content')
         .eq('notebook_id', notebookId)
         .single();
-      
+
       if (source?.content) {
         payload.content = source.content.substring(0, 5000); // Limit content size
       }
@@ -82,7 +82,7 @@ serve(async (req) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': authHeader,
+        'Authorization': `Bearer ${authHeader}`,
       },
       body: JSON.stringify(payload)
     })
@@ -92,7 +92,7 @@ serve(async (req) => {
       console.error('Web service error:', response.status, response.statusText)
       const errorText = await response.text();
       console.error('Error response:', errorText);
-      
+
       // Update status to failed
       await supabaseClient
         .from('notebooks')
@@ -108,8 +108,8 @@ serve(async (req) => {
     console.log('Request accepted by web service for background processing')
 
     return new Response(
-      JSON.stringify({ 
-        success: true, 
+      JSON.stringify({
+        success: true,
         message: 'Notebook generation started in background',
         notebookId
       }),
