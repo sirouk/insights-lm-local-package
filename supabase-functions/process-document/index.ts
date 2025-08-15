@@ -71,7 +71,7 @@ serve(async (req) => {
     }
 
     if (authHeader) {
-      headers['Authorization'] = `Bearer ${authHeader}`
+      headers['Authorization'] = authHeader
     }
 
     const response = await fetch(webhookUrl, {

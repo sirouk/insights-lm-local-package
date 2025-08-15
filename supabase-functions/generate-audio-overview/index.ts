@@ -62,7 +62,7 @@ serve(async (req) => {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': `Bearer ${authHeader}`,
+              'Authorization': authHeader,
             },
             body: JSON.stringify({
               notebook_id: notebookId,

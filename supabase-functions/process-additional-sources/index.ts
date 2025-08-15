@@ -60,7 +60,7 @@ serve(async (req) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${authToken}`,
+        'Authorization': authToken,
         ...corsHeaders
       },
       body: JSON.stringify(webhookPayload)
