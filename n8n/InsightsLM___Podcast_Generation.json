@@ -268,7 +268,7 @@
           "fieldValues": [
             {
               "fieldId": "audio_overview_url",
-              "fieldValue": "=http://localhost:8000/storage/v1/{{ $json.signedURL }}"
+              "fieldValue": "=SUPABASE_PUBLIC_URL_PLACEHOLDER/storage/v1/{{ $json.signedURL }}"
             },
             {
               "fieldId": "audio_url_expires_at",
