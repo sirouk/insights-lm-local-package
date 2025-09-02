@@ -190,18 +190,18 @@
           "numCtx": 10000
         }
       },
-      "type": "@n8n/n8n-nodes-langchain.lmOllama",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1,
       "position": [
         -1060,
         540
       ],
       "id": "687d0fca-df37-41ec-8b8e-726a98ff7545",
-      "name": "Ollama Model",
+      "name": "OpenAI Model",
       "credentials": {
-        "ollamaApi": {
-          "id": "QHz0rwHKElfjaqrz",
-          "name": "Ollama account"
+        "openAiApi": {
+          "id": "OPENAI_TEXT_ID",
+          "name": "OpenAI Text Model"
         }
       }
     },

@@ -277,18 +277,18 @@
           "format": "json"
         }
       },
-      "type": "@n8n/n8n-nodes-langchain.lmOllama",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1,
       "position": [
         1520,
         760
       ],
       "id": "14bc8c90-1946-4924-a766-ac013e7a368d",
-      "name": "Ollama Model",
+      "name": "OpenAI Model",
       "credentials": {
-        "ollamaApi": {
-          "id": "QHz0rwHKElfjaqrz",
-          "name": "Ollama account"
+        "openAiApi": {
+          "id": "OPENAI_TEXT_ID",
+          "name": "OpenAI Text Model"
         }
       }
     },

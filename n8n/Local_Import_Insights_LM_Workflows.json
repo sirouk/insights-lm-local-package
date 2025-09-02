@@ -44,7 +44,9 @@
     },
     {
       "parameters": {
-        "jsCode": "// Loop over each input item passed to this node\nfor (const item of $input.all()) {\n  // Convert the JSON object of the current item into a string\n  let dataString = JSON.stringify(item.json);\n\n  // Perform the find-and-replace operations on the string version of the JSON.\n  // The 'g' flag in the regular expression ensures all instances are replaced.\n  const updatedString = dataString\n    .replace(/MFP2RlsZaArRcBmq/g, $('Enter User Values').first().json['Enter the n8n Custom Webhook Header Auth ID'])\n    .replace(/FLQTzRBk2pJi894u/g, $('Enter User Values').first().json['Enter the n8n Supabase Credential ID'])\n    .replace(/QHz0rwHKElfjaqrz/g, $('Enter User Values').first().json['Enter the n8n Ollama Credential ID'])\n  // Convert the modified string back into a JSON object and\n  // overwrite the original JSON data of the item.\n  item.json = JSON.parse(updatedString);\n}\n\n// Return all the modified items to be passed to the next node in the workflow.\nreturn $input.all();"
+        "jsCode": "// Loop over each input item passed to this node\nfor (const item of $input.all()) {\n  // Convert the JSON object of the current item into a string\n  let dataString = JSON.stringify(item.json);\n\n  // Perform the find-and-replace operations on the string version of the JSON.\n  // The 'g' flag in the regular expression ensures all instances are replaced.\n  const updatedString = dataString\n    .replace(/MFP2RlsZaArRcBmq/g, $('Enter User Values').first().json['Enter the n8n Custom Webhook Header Auth ID'])\n    .replace(/FLQTzRBk2pJi894u/g, $('Enter User Values').first().json['Enter the n8n Supabase Credential ID'])\n    .replace(/OPENAI_TEXT_ID/g, $('Enter User Values').first().json['Enter the OpenAI Text Model Credential ID'])
+    .replace(/OPENAI_EMBED_ID/g, $('Enter User Values').first().json['Enter the OpenAI Embeddings Credential ID'
+        ])\n // Convert the modified string back into a JSON object and\n  // overwrite the original JSON data of the item.\n  item.json = JSON.parse(updatedString);\n}\n\n// Return all the modified items to be passed to the next node in the workflow.\nreturn $input.all();"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -208,7 +210,13 @@
             },
             {
               "id": "4a8ab47c-538c-47c6-8d2e-fd5e975e1868",
-              "name": "Enter the Ollama Credential ID",
+              "name": "Enter the OpenAI Text Model Credential ID",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "9b8cd67e-421a-49f7-9e5e-fd6f087f2979",
+              "name": "Enter the OpenAI Embeddings Credential ID",
               "value": "",
               "type": "string"
             }
@@ -393,7 +401,9 @@
     },
     {
       "parameters": {
-        "jsCode": "// Loop over each input item passed to this node\nfor (const item of $input.all()) {\n  // Convert the JSON object of the current item into a string\n  let dataString = JSON.stringify(item.json);\n\n  // Perform the find-and-replace operations on the string version of the JSON.\n  // The 'g' flag in the regular expression ensures all instances are replaced.\n  const updatedString = dataString\n    .replace(/MFP2RlsZaArRcBmq/g, $('Enter User Values').first().json['Enter the n8n Custom Webhook Header Auth ID'])\n    .replace(/FLQTzRBk2pJi894u/g, $('Enter User Values').first().json['Enter the n8n Supabase Credential ID'])\n    .replace(/QHz0rwHKElfjaqrz/g, $('Enter User Values').first().json['Enter the n8n Ollama Credential ID'])\n  // Convert the modified string back into a JSON object and\n  // overwrite the original JSON data of the item.\n  item.json = JSON.parse(updatedString);\n}\n\n// Return all the modified items to be passed to the next node in the workflow.\nreturn $input.all();"
+        "jsCode": "// Loop over each input item passed to this node\nfor (const item of $input.all()) {\n  // Convert the JSON object of the current item into a string\n  let dataString = JSON.stringify(item.json);\n\n  // Perform the find-and-replace operations on the string version of the JSON.\n  // The 'g' flag in the regular expression ensures all instances are replaced.\n  const updatedString = dataString\n    .replace(/MFP2RlsZaArRcBmq/g, $('Enter User Values').first().json['Enter the n8n Custom Webhook Header Auth ID'])\n    .replace(/FLQTzRBk2pJi894u/g, $('Enter User Values').first().json['Enter the n8n Supabase Credential ID'])\n    .replace(/OPENAI_TEXT_ID/g, $('Enter User Values').first().json['Enter the OpenAI Text Model Credential ID'])
+    .replace(/OPENAI_EMBED_ID/g, $('Enter User Values').first().json['Enter the OpenAI Embeddings Credential ID'
+        ])\n // Convert the modified string back into a JSON object and\n  // overwrite the original JSON data of the item.\n  item.json = JSON.parse(updatedString);\n}\n\n// Return all the modified items to be passed to the next node in the workflow.\nreturn $input.all();"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,

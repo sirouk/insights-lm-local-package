@@ -31,18 +31,18 @@
           "format": "json"
         }
       },
-      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1,
       "position": [
         -120,
         100
       ],
       "id": "ae40613a-1713-4c65-a204-85ad4e05a93f",
-      "name": "Ollama Chat Model",
+      "name": "OpenAI Chat Model",
       "credentials": {
-        "ollamaApi": {
-          "id": "QHz0rwHKElfjaqrz",
-          "name": "Ollama account"
+        "openAiApi": {
+          "id": "OPENAI_TEXT_ID",
+          "name": "OpenAI Text Model"
         }
       }
     },
@@ -124,18 +124,18 @@
       "parameters": {
         "model": "nomic-embed-text:latest"
       },
-      "type": "@n8n/n8n-nodes-langchain.embeddingsOllama",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
       "typeVersion": 1,
       "position": [
         380,
         -100
       ],
       "id": "c10decbe-3270-427f-be01-a1bf122286b2",
-      "name": "Embeddings Ollama",
+      "name": "Embeddings OpenAI",
       "credentials": {
-        "ollamaApi": {
-          "id": "QHz0rwHKElfjaqrz",
-          "name": "Ollama account"
+        "openAiApi": {
+          "id": "OPENAI_EMBED_ID",
+          "name": "OpenAI Embeddings"
         }
       }
     },
@@ -198,18 +198,18 @@
           "format": "json"
         }
       },
-      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1,
       "position": [
         1200,
         80
       ],
       "id": "518def0e-733e-4a59-b76e-b949d4946a9c",
-      "name": "Ollama Chat Model1",
+      "name": "OpenAI Chat Model1",
       "credentials": {
-        "ollamaApi": {
-          "id": "QHz0rwHKElfjaqrz",
-          "name": "Ollama account"
+        "openAiApi": {
+          "id": "OPENAI_TEXT_ID",
+          "name": "OpenAI Text Model"
         }
       }
     },
