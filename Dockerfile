@@ -6,14 +6,20 @@ WORKDIR /app
 # Add build arguments for environment variables
 ARG VITE_SUPABASE_URL
 ARG VITE_SUPABASE_ANON_KEY
+ARG ENABLE_LIGHTRAG
+ARG ENABLE_MULTIMODAL
+ARG ENABLE_CONTEXTUAL
 
 # Make build args available as environment variables during build
 ENV VITE_SUPABASE_URL=${VITE_SUPABASE_URL}
 ENV VITE_SUPABASE_ANON_KEY=${VITE_SUPABASE_ANON_KEY}
+ENV VITE_ENABLE_LIGHTRAG=${ENABLE_LIGHTRAG}
+ENV VITE_ENABLE_MULTIMODAL=${ENABLE_MULTIMODAL}
+ENV VITE_ENABLE_CONTEXTUAL=${ENABLE_CONTEXTUAL}
 
 # Clone the repository (into a temporary directory)
 RUN apt-get update && apt-get install -y git && \
-    git clone https://github.com/theaiautomators/insights-lm-public.git /tmp/repo && \
+    git clone https://github.com/sirouk/insights-lm-public.git /tmp/repo && \
     # Clear the app directory before copying files
     rm -rf /app/* && \
     # Copy the repository contents to the app directory
