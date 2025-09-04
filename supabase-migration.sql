@@ -435,6 +435,7 @@ VALUES
     'application/pdf',
     'text/plain',
     'text/csv',
+    'text/markdown',
     'application/msword',
     'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     'audio/mpeg',
